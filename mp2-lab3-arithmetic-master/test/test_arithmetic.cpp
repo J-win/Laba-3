@@ -72,7 +72,9 @@ INSTANTIATE_TEST_CASE_P(i2, ParArithmetic2, ::testing::ValuesIn(tt));
 
 TEST_P(ParArithmetic3, isIncorrect3)
 {
-	EXPECT_EQ(10, the_solution_of_the_expression(convert_string_to_stack(s3)));
+	Stack<Lexmem> b = convert_string_to_stack(s3);
+	b = polish_notation(b);
+	EXPECT_EQ(10, the_solution_of_the_expression(b));
 }
 INSTANTIATE_TEST_CASE_P(i3, ParArithmetic3, ::testing::ValuesIn(ttt));
 
@@ -88,5 +90,6 @@ TEST_F(GlobalStackLexmem, work_polish_notation)
 }
 TEST_F(GlobalStackLexmem, work_the_solution_of_the_expression)
 {
-	EXPECT_EQ(35, the_solution_of_the_expression(s));
+
+	EXPECT_EQ(35, the_solution_of_the_expression(sp));
 }

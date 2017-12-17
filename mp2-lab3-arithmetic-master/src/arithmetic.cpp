@@ -2,63 +2,105 @@
 #include <iostream>
 // реализация функций и классов для вычисления арифметических выражений
 
+Lexmem::Lexmem(const int n, const string  s, const double d, const char c)
+{
+	parametr = s;
+	number = d;
+	sign = c;
+	num = n;
+}
+
 Lexmem::Lexmem(const Lexmem & s)
 {
+	parametr = s.parametr;
 	number = s.number;
 	sign = s.sign;
 	num = s.num;
 }
 
+Lexmem::Lexmem(const string & s)
+{
+	parametr = s;
+	num = 2;
+}
+
 Lexmem::Lexmem(const double s)
 {
 	number = s;
-	num = true;
+	num = 1;
 }
 
 Lexmem::Lexmem(const char s)
 {
 	sign = s;
-	num = false;
+	num = 0;
 }
 
 Lexmem & Lexmem::operator=(const Lexmem & a)
 {
+	parametr = a.parametr;
 	number = a.number;
 	sign = a.sign;
 	num = a.num;
 	return *this;
 }
 
+Lexmem & Lexmem::operator=(const string & a)
+{
+	parametr = a;
+	num = 2;
+	return *this;
+}
+
 Lexmem & Lexmem::operator=(const double a)
 {
 	number = a;
-	num = true;
+	num = 1;
 	return *this;
 }
 
 Lexmem & Lexmem::operator=(const char c)
 {
 	sign = c;
-	num = false;
+	num = 0;
 	return *this;
 }
 
 bool Lexmem::operator==(const Lexmem & a) const
 {
 	if (this != &a)
+	{
 		if (num == a.num)
-			if (num)
+		{
+			if (num == 1)
+			{
 				if (number != a.number)
 					return false;
 				else
 					return true;
+			}
 			else
-				if (sign != a.sign)
-					return false;
+			{
+				if (num == 0)
+				{
+					if (sign != a.sign)
+						return false;
+					else
+						return true;
+				}
 				else
-					return true;
+				{
+					if (parametr != a.parametr)
+						return false;
+					else
+						return true;
+				}
+			}
+
+		}
 		else
 			return false;
+	}
 	else
 		return true;
 }
@@ -66,6 +108,11 @@ bool Lexmem::operator==(const Lexmem & a) const
 bool Lexmem::operator!=(const Lexmem & a) const
 {
 	return (!(*this == a));
+}
+
+string Lexmem::retp() const
+{
+	return parametr;
 }
 
 double Lexmem::retn() const
@@ -78,17 +125,20 @@ char Lexmem::retc() const
 	return sign;
 }
 
-bool Lexmem::retb() const
+int Lexmem::retb() const
 {
 	return num;
 }
 
 ostream & operator<<(ostream & out, const Lexmem & v)
 {
-	if (v.num)
+	if (v.num == 1)
 		out << v.number;
 	else
-		out << v.sign;
+		if (v.num == 0)
+			out << v.sign;
+		else
+			out << v.parametr;
 	return out;
 }
 
@@ -292,15 +342,12 @@ Stack<Lexmem> convert_string_to_stack(const string & c)
 			{
 				if (string_parametr != "")
 				{
-					cout << "Write parametr " << string_parametr << endl;
-					double parametr;
-					cin >> parametr;
 					if (f)
 					{
-						parametr *= -1;
+						string_parametr = '-' + string_parametr;
 						f = false;
 					}
-					b = parametr;
+					b = string_parametr;
 					stack.push(b);
 					string_parametr = "";
 				}
@@ -328,15 +375,12 @@ Stack<Lexmem> convert_string_to_stack(const string & c)
 	}
 	if (string_parametr != "")
 	{
-		cout << "Write parametr " << string_parametr << endl;
-		double parametr;
-		cin >> parametr;
 		if (f)
 		{
-			parametr *= -1;
+			string_parametr = '-' + string_parametr;
 			f = false;
 		}
-		b = parametr;
+		b = string_parametr;
 		stack.push(b);
 	}
 	if (string_number != "")
@@ -363,7 +407,7 @@ Stack<Lexmem> polish_notation(const Stack<Lexmem>& s)
 	while (!(stack_1.check_void()))
 	{
 		element_stack_1 = stack_1.pop();
-		if (element_stack_1.retb())
+		if (element_stack_1.retb() != 0)
 			stack_2.push(element_stack_1);
 		else
 		{
@@ -399,9 +443,52 @@ Stack<Lexmem> polish_notation(const Stack<Lexmem>& s)
 
 double the_solution_of_the_expression(const Stack<Lexmem>& s)
 {
-	Stack<Lexmem> stack = polish_notation(s);
-	cout << stack << endl;
-	stack.convert();
+	Stack<Lexmem> stack_p = s;
+	Stack<Lexmem> stack;
+	int i = stack_p.get_nElem();
+	Lexmem* st = new Lexmem[i];
+	i = 0;
+	while (!(stack_p.check_void()))
+	{
+		Lexmem b = stack_p.pop();
+		if (b.retb() == 2)
+		{
+			int k = 1;
+			string min = b.retp();
+			if (min[0] == '-')
+			{
+				k = -1;
+				min.erase(0, 1);
+				b = min;
+			}
+			bool f = true;
+			for (int j = 0; ((j < i) && (f)); j++)
+				if (st[j].retp() == b.retp())
+				{
+					f = false;
+					b = st[j];
+				}
+			if (f)
+			{
+				cout << "Write parametr " << b.retp() << endl;
+				double d;
+				cin >> d;
+				Lexmem a(b.retb(), b.retp(), k * d, b.retc());
+				b = k * d;
+				stack.push(b);
+				st[i++] = a;
+			}
+			else
+			{
+				Lexmem e;
+				if (k == -1)
+					e = k * b.retn();
+				stack.push(e);
+			}
+		}
+		else
+			stack.push(b);
+	}
 	Stack<double> number_stack;
 	while (!(stack.check_void()))
 	{
