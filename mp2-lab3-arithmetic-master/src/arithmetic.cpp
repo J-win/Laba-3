@@ -489,6 +489,7 @@ double the_solution_of_the_expression(const Stack<Lexmem>& s)
 		else
 			stack.push(b);
 	}
+	delete[] st;
 	Stack<double> number_stack;
 	while (!(stack.check_void()))
 	{
@@ -503,6 +504,5 @@ double the_solution_of_the_expression(const Stack<Lexmem>& s)
 			number_stack.push(evaluating_the_expression(number_1, number_2, sign));
 		}
 	}
-	delete[] st;
 	return number_stack.top();
 }
