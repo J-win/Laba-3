@@ -480,7 +480,7 @@ double the_solution_of_the_expression(const Stack<Lexmem>& s)
 			}
 			else
 			{
-				Lexmem e;
+				Lexmem e = b.retn();
 				if (k == -1)
 					e = k * b.retn();
 				stack.push(e);
@@ -493,7 +493,7 @@ double the_solution_of_the_expression(const Stack<Lexmem>& s)
 	while (!(stack.check_void()))
 	{
 		Lexmem d = stack.pop();
-		if (d.retb())
+		if (d.retb() != 0)
 			number_stack.push(d.retn());
 		else
 		{
