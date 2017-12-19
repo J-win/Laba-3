@@ -446,7 +446,7 @@ double the_solution_of_the_expression(const Stack<Lexmem>& s)
 	Stack<Lexmem> stack_p = s;
 	Stack<Lexmem> stack;
 	int i = stack_p.get_nElem();
-	Lexmem* st = new Lexmem[i];
+	Lexmem* st = new Lexmem[i / 2 + 1];
 	i = 0;
 	while (!(stack_p.check_void()))
 	{
