@@ -1,6 +1,6 @@
 #include "..\include\arithmetic.h"
 #include <iostream>
-// реализация функций и классов для вычисления арифметических выражений
+// Г°ГҐГ Г«ГЁГ§Г Г¶ГЁГї ГґГіГ­ГЄГ¶ГЁГ© ГЁ ГЄГ«Г Г±Г±Г®Гў Г¤Г«Гї ГўГ»Г·ГЁГ±Г«ГҐГ­ГЁГї Г Г°ГЁГґГ¬ГҐГІГЁГ·ГҐГ±ГЄГЁГµ ГўГ»Г°Г Г¦ГҐГ­ГЁГ©
 
 Lexmem::Lexmem(const int n, const string  s, const double d, const char c)
 {
@@ -214,7 +214,7 @@ bool check_for_correctness(const string & s)
 		c = c + s;
 		c = c + ' ';
 		string signs = "*+-/";
-		string wrong_signs = "=\\|&!`~@#%^_?,:;'\"№ ";
+		string wrong_signs = "=\\|&!`~@#%^_?,:;'\"В№ ";
 		int len = c.length();
 		int f = 0;
 		int t = 0;
@@ -474,7 +474,7 @@ double the_solution_of_the_expression(const Stack<Lexmem>& s)
 				double d;
 				cin >> d;
 				Lexmem a(b.retb(), b.retp(), k * d, b.retc());
-				b = k * d;
+				b = d;
 				stack.push(b);
 				st[i++] = a;
 			}
