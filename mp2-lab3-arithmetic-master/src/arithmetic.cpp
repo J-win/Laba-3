@@ -473,8 +473,8 @@ double the_solution_of_the_expression(const Stack<Lexmem>& s)
 				cout << "Write parametr " << b.retp() << endl;
 				double d;
 				cin >> d;
-				Lexmem a(b.retb(), b.retp(), k * d, b.retc());
-				b = d;
+				Lexmem a(b.retb(), b.retp(), d, b.retc());
+				b = k * d;
 				stack.push(b);
 				st[i++] = a;
 			}
